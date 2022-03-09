@@ -10,6 +10,12 @@ import java.net.*;
 public class MultiServer {
     private ServerSocket serverSocket;
 
+    /**
+     * Starts a server at a specified port and then waits for a TCP connection. If a connection is made, it starts a new
+     * Thread for handling the connection and ending it.
+     * @param port The port of the server socket.
+     * @throws IOException If the creation of the ServerSocket fails.
+     */
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         while (true){
@@ -22,10 +28,18 @@ public class MultiServer {
             }
         }
     }
+
+    /**
+     * Closes the ServerSocket.
+     * @throws IOException
+     */
     public void stop() throws IOException {
         serverSocket.close();
     }
 
+    /**
+     * Class for handling a TCP connection in a different thread. (similar to Client.java)
+     */
     private static class ClientHandler extends Thread{
         private final Socket clientSocket;
         private PrintWriter out;
@@ -41,6 +55,9 @@ public class MultiServer {
         }
 
         @Override
+        /**
+         *
+         */
         public void run() {
             try {
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
