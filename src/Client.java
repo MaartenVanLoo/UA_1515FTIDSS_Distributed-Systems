@@ -17,7 +17,23 @@ public class Client {
 
     public String sendMessage(String msg) throws IOException {
         out.println(msg);
-        return in.readLine(); //Return response;
+        String respons = in.readLine();
+        System.out.println(respons);
+
+        //Fetch answer file
+        byte[] mybytearray = new byte[1024];
+        InputStream is = clientSocket.getInputStream();
+        FileOutputStream fos = new FileOutputStream("recieved.png");
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        int bytesRead;
+        do {
+            bytesRead = is.read(mybytearray, 0, mybytearray.length);
+            bos.write(mybytearray, 0, bytesRead);
+        }while(mybytearray.length == bytesRead);
+        bos.flush();
+        bos.close();
+
+        return respons;
     }
 
     public void stopConnection() throws IOException {
