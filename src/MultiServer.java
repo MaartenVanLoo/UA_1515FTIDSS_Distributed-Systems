@@ -56,7 +56,8 @@ public class MultiServer {
 
         @Override
         /**
-         *
+         * Initializes the PrintWriter and BufferedReader. Then it reads the lines it receives until a period appears.
+         * Finally it prints out the lines it received.
          */
         public void run() {
             try {
@@ -83,6 +84,11 @@ public class MultiServer {
         }
     }
 
+    /**
+     * Starts a server that accepts multiple TCP connections, each in a different thread.
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         System.out.println("Starting server");
         System.out.println("Server host ip:");
