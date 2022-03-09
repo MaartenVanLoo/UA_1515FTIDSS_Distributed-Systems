@@ -7,6 +7,7 @@ import java.net.*;
  * source:https://www.baeldung.com/udp-in-java
  */
 public class UDPServer  extends Thread{
+
     private DatagramSocket socket;
     private boolean running = true;
     private byte[] buf = new byte[256];

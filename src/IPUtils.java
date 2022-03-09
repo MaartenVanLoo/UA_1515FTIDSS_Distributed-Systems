@@ -5,6 +5,11 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 public class IPUtils {
+
+    /**
+     * Prints the IPv4 network interfaces of the machine you're using to the console.
+     * @throws SocketException
+     */
     public static void printIpv4Interfaces() throws SocketException {
         Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
         while(e.hasMoreElements())
