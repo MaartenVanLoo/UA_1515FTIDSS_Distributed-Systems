@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
-import java.util.Enumeration;
 
 /**
  * Source: https://www.baeldung.com/a-guide-to-java-sockets
@@ -28,7 +27,7 @@ public class MultiServer {
     }
 
     private static class ClientHandler extends Thread{
-        private Socket clientSocket;
+        private final Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
 
@@ -66,26 +65,11 @@ public class MultiServer {
             }
         }
     }
-    public static void printIpv4Interfaces() throws SocketException {
-        Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-        while(e.hasMoreElements())
-        {
-            NetworkInterface n = e.nextElement();
-            Enumeration<InetAddress> ee = n.getInetAddresses();
-            while (ee.hasMoreElements())
-            {
-                InetAddress i = ee.nextElement();
-                if (i.getClass() == Inet4Address.class){ //filter for ipv4
-                    System.out.printf("%-40s\t",n.getDisplayName());
-                    System.out.println(i.getHostAddress());
-                }
-            }
-        }
-    }
+
     public static void main(String[] args) throws IOException {
         System.out.println("Starting server");
         System.out.println("Server host ip:");
-        MultiServer.printIpv4Interfaces();
+        IPUtils.printIpv4Interfaces();
         MultiServer server = new MultiServer();
         server.start(8888);
     }

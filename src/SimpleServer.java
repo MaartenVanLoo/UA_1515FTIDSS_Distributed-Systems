@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.Enumeration;
 
 /**
  * Source: https://www.baeldung.com/a-guide-to-java-sockets
@@ -39,26 +38,10 @@ public class SimpleServer {
         serverSocket.close();
     }
 
-    public static void printIpv4Interfaces() throws SocketException {
-        Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-        while(e.hasMoreElements())
-        {
-            NetworkInterface n = e.nextElement();
-            Enumeration<InetAddress> ee = n.getInetAddresses();
-            while (ee.hasMoreElements())
-            {
-                InetAddress i = ee.nextElement();
-                if (i.getClass() == Inet4Address.class){ //filter for ipv4
-                    System.out.printf("%-40s\t",n.getDisplayName());
-                    System.out.println(i.getHostAddress());
-                }
-            }
-        }
-    }
     public static void main(String[] args) throws IOException {
         System.out.println("Starting server");
         System.out.println("Server host ip:");
-        SimpleServer.printIpv4Interfaces();
+        IPUtils.printIpv4Interfaces();
         SimpleServer server = new SimpleServer();
         server.start(8888);
     }
