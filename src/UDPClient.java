@@ -67,7 +67,7 @@ public class UDPClient {
         System.out.println(answer);
         answer = client.sendMessage("IT WORKS!!!!");
         System.out.println(answer);
-        //client.requestFile("testfile.png");
+        client.requestFile("testfile.png");
 
     }
 }
