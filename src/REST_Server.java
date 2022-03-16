@@ -19,7 +19,7 @@ public class REST_Server {
         this.server = HttpServer.create(new InetSocketAddress("localhost", port), queueSize);;
         this.server.setExecutor(threadPoolExecutor);
 
-        server.createContext("/userService", new  FirstHttpHandler());
+        server.createContext("/userService", new  BankHttpHandler());
     }
 
     public void start(){
@@ -46,8 +46,8 @@ public class REST_Server {
 
         String handleGetRequest(HttpExchange httpExchange){
             System.out.println("Get Request");
+            System.out.println(httpExchange.getRequestURI().toString());
             return loadHtmlFile("rsc/test.html");
-            //return httpExchange.getRequestURI().toString();
 
         }
         String handlePostRequest(HttpExchange httpExchange){
@@ -82,6 +82,74 @@ public class REST_Server {
             }
             return htmlPage;
         }
+    }
+    private class BankHttpHandler implements HttpHandler{
+        @Override
+        public void handle(HttpExchange httpExchange) throws IOException {
+            String requestParamValue = null;
+            if ("GET".equals(httpExchange.getRequestMethod())){
+                requestParamValue = handleGetRequest(httpExchange);
+            }
+            else if ("POST".equals(httpExchange.getRequestMethod())){
+                requestParamValue = handlePostRequest(httpExchange);
+            }
+            else if ("PUT".equals(httpExchange.getRequestMethod())){
+                requestParamValue = handlePutRequest(httpExchange);
+            }else{
+                System.out.println("Unknown request");
+                return;
+            }
+            handleResponse(httpExchange,requestParamValue);
+        }
+
+        String handleGetRequest(HttpExchange httpExchange){
+            System.out.println("Get Request");
+            System.out.println(httpExchange.getRequestURI().toString());
+            String requestURI = httpExchange.getRequestURI().toString();
+            String[] cmd = requestURI.split("/");
+
+            //GET
+            String user = cmd[0].split("=")[0];
+            System.out.println("Getting balance of: " + user);
+            return "8";
+        }
+        String handlePostRequest(HttpExchange httpExchange){
+            System.out.println("POST Request");
+            System.out.println(httpExchange.getRequestURI().toString());
+            String requestURI = httpExchange.getRequestURI().toString();
+            InputStream bodyPOST = httpExchange.getRequestBody();
+
+            return "";
+        }
+        String handlePutRequest(HttpExchange httpExchange){
+            System.out.println("PUT Request");
+            System.out.println(httpExchange.getRequestURI().toString());
+            String requestURI = httpExchange.getRequestURI().toString();
+            InputStream bodyPUT = httpExchange.getRequestBody();
+            String[] cmd = requestURI.split("/");
+
+            if (cmd[0].equals("addMoney")){
+                String[] args= cmd[1].split("=");
+                System.out.println("Add money to " + args[0] + " value = " + args[1]);
+            }
+            else if (cmd[0].equals("getMoney")){
+                String[] args= cmd[1].split("=");
+                System.out.println("Get money from " + args[0] + " value = " + args[1]);
+            }
+
+            return "New Balance";
+        }
+        void handleResponse(HttpExchange httpExchange, String result) throws IOException {
+            System.out.println("Answer");
+            OutputStream outputStream = httpExchange.getResponseBody();
+            httpExchange.sendResponseHeaders(200, result.length());
+            outputStream.write(result.getBytes(StandardCharsets.UTF_8));
+            outputStream.flush();
+            outputStream.close();
+            return;
+        }
+
+
     }
     public static void main(String[] args) throws IOException {
         System.out.println("Starting REST server");
