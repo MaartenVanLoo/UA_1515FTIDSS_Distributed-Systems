@@ -8,7 +8,7 @@ import org.springframework.context.annotation.*;
 public class LoadDB {
     private static final Logger log = LoggerFactory.getLogger(LoadDB.class);
 
-    @Bean
+    @Bean   // loads the database with 2 accounts and prints this to the console (log)
     CommandLineRunner initDB(AccountRepo repo) {
         return args -> {
             log.info("Preloading " + repo.save(new BankAccount("Maarten", "123456")));

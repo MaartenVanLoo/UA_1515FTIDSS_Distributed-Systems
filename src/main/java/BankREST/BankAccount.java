@@ -4,11 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+// https://spring.io/blog/2011/02/10/getting-started-with-spring-data-jpa/
+
 @Entity
 public class BankAccount {
 
     private @GeneratedValue Long id;    // generates a unique id value upon creating an object of this class
-    private @Id String accName;         // indicates that this is the primary identifier of an object of this class
+    private @Id String accName;         // indicates that this is the primary identifier in the JPA repository of an object of this class
     private String passw;
     private int bal = 0;
 

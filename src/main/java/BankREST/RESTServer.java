@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.Collections;
 
+// https://spring.io/guides/gs/rest-service/
+// Application class
 @SpringBootApplication
 public class RESTServer {
     public static void main(String... args) {
