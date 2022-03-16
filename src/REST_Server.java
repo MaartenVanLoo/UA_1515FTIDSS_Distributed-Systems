@@ -19,7 +19,7 @@ public class REST_Server {
         this.server = HttpServer.create(new InetSocketAddress("localhost", port), queueSize);;
         this.server.setExecutor(threadPoolExecutor);
 
-        server.createContext("/userService", new  BankHttpHandler());
+        server.createContext("/", new  BankHttpHandler());
     }
 
     public void start(){
