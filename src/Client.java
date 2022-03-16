@@ -17,13 +17,16 @@ public class Client {
 
     public String sendMessage(String msg) throws IOException {
         out.println(msg);
-        String respons = in.readLine();
-        System.out.println(respons);
+        return in.readLine();
+    }
 
+    public void requestFile(String filename) throws IOException{
+        //Request filename
+        out.println("RequestFile:"+filename);
         //Fetch answer file
         byte[] mybytearray = new byte[1024];
         InputStream is = clientSocket.getInputStream();
-        FileOutputStream fos = new FileOutputStream("recieved.png");
+        FileOutputStream fos = new FileOutputStream("received.png");
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         int bytesRead;
         do {
@@ -32,8 +35,6 @@ public class Client {
         }while(mybytearray.length == bytesRead);
         bos.flush();
         bos.close();
-
-        return respons;
     }
 
     public void stopConnection() throws IOException {
@@ -48,6 +49,7 @@ public class Client {
 
         System.out.printf("Send    : %s\n",message);
         String response = client.sendMessage(message);
+        client.requestFile("testfile.png");
         System.out.printf("Response: %s\n",response);
 
         client.stopConnection();

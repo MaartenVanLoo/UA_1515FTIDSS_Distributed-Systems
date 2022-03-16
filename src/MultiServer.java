@@ -33,11 +33,6 @@ public class MultiServer {
         }
 
         @Override
-        public synchronized void start() {
-            super.start();
-        }
-
-        @Override
         public void run() {
             try {
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -50,15 +45,15 @@ public class MultiServer {
                         out.println("bye");
                         break;
                     }
-                    out.println(inputLine); //echo input back to client
                     System.out.printf("Recieved: %s\n",inputLine);
-                    File myFile = new File("testfile.png");
-                    byte[] mybytearray = new byte[(int) myFile.length()];
-                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myFile));
-                    int byteCount = bis.read(mybytearray, 0, mybytearray.length);
-                    OutputStream os = clientSocket.getOutputStream();
-                    os.write(mybytearray, 0, mybytearray.length);
-                    os.flush();
+
+                    String[] cmd = inputLine.split(":");
+                    if (cmd.length == 0) continue;
+
+                    if (cmd.length == 1) {
+                        out.println(cmd[0]);} //echo back;
+                    //parse other commands
+                    if (cmd[0].equals("RequestFile")) sendFile(cmd[1]);
                 }
                 in.close();
                 out.close();
@@ -66,6 +61,17 @@ public class MultiServer {
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
+        }
+
+        private void sendFile(String filename) throws IOException {
+            //send file
+            File myFile = new File(filename);
+            byte[] mybytearray = new byte[(int) myFile.length()];
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myFile));
+            int byteCount = bis.read(mybytearray, 0, mybytearray.length);
+            OutputStream os = clientSocket.getOutputStream();
+            os.write(mybytearray, 0, mybytearray.length);
+            os.flush();
         }
     }
 
