@@ -1,7 +1,8 @@
 package BankREST;
 
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
+
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -55,30 +56,20 @@ public class BankCustomer {
     }
 
     public String getBalance(String accname, String pw) {
-        try {
-            String url = "http://localhost:8083/bank/bal?accName=" + accname + "&passw=" + pw;
-            Unirest.setTimeouts(0, 0);
-            String input = Unirest.get(url).asString().getBody();
+        String url = "http://localhost:8083/bank/bal?accName=" + accname + "&passw=" + pw;
+        String input = Unirest.get(url).asString().getBody();
 
-            Unirest.shutdown();
-
-            return input;
-        } catch (UnirestException | IOException e) {
-            e.printStackTrace();
-            return "error";
-        }
+        return input;
     }
 
     public String addBalance(String accname, String pw, int add) {
         try {
             String url = "http://localhost:8083/bank/add?accName=" + accname + "&passw=" + pw + "&add=" + add;
-            Unirest.setTimeouts(0, 0);
             String input = Unirest.put(url).asString().getBody();
 
-            Unirest.shutdown();
 
             return input;
-        } catch (UnirestException | IOException e) {
+        } catch (UnirestException e) {
             e.printStackTrace();
             return "error";
         }
@@ -87,13 +78,10 @@ public class BankCustomer {
     public String wdBalance(String accname, String pw, int wd) {
         try {
             String url = "http://localhost:8083/bank/wd?accName=" + accname + "&passw=" + pw + "&wd=" + wd;
-            Unirest.setTimeouts(10, 0);
             String input = Unirest.put(url).asString().getBody();
 
-            Unirest.shutdown();
-
             return input;
-        } catch (UnirestException | IOException e) {
+        } catch (UnirestException e) {
             e.printStackTrace();
             return "error";
         }
