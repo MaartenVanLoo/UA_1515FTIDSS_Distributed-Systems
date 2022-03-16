@@ -30,6 +30,7 @@ public class UDPServer  extends Thread{
                 packet = new DatagramPacket(buf, buf.length, address, port);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 received = received.substring(0,received.indexOf(0)); //remove buffer padding on the end!! (\0)
+                System.out.println("Received: " +received );
                 //received.replace(0,"");
                 String[] cmd = received.split(":");
                 if (cmd.length == 0) continue;

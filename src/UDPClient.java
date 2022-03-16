@@ -63,7 +63,11 @@ public class UDPClient {
         UDPClient client = new UDPClient("127.0.0.1",8889);
         String answer = client.sendMessage("Hello");
         System.out.println(answer);
-        client.requestFile("testfile.png");
+        answer = client.sendMessage("echo");
+        System.out.println(answer);
+        answer = client.sendMessage("IT WORKS!!!!");
+        System.out.println(answer);
+        //client.requestFile("testfile.png");
 
     }
 }
