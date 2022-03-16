@@ -23,6 +23,7 @@ public class Client {
     public void requestFile(String filename) throws IOException{
         //Request filename
         out.println("RequestFile:"+filename);
+
         //Fetch answer file
         byte[] mybytearray = new byte[1024];
         InputStream is = clientSocket.getInputStream();
