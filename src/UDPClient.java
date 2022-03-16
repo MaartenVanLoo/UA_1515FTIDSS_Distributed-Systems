@@ -7,10 +7,10 @@ public class UDPClient {
     private int port;
     private byte[] buf;
 
-    public UDPClient(String ip, int port) throws SocketException {
+    public UDPClient(int port) throws SocketException, UnknownHostException {
         this.socket = new DatagramSocket();
         this.port =port;
-        //this.address = InetAddress(ip);
+        this.address = InetAddress.getByName("localhost");
     }
 
 
@@ -18,6 +18,6 @@ public class UDPClient {
         System.out.println("Starting server");
         System.out.println("Server host ip:");
         IPUtils.printIpv4Interfaces();
-        UDPClient client = new UDPClient("127.0.0.1",8889);
+        UDPClient client = new UDPClient(8889);
     }
 }
