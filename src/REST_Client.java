@@ -17,17 +17,17 @@ public class REST_Client {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest getBalance = HttpRequest.newBuilder()
-                .uri(URI.create("http://openjdk.java.net/"))
+                .uri(URI.create("http://localhost:8001/getBalance/user=Jens"))
                 .GET()
                 .build();
 
         HttpRequest addMoney = HttpRequest.newBuilder()                 //deposit money
-                .uri(URI.create("http://openjdk.java.net/"))
+                .uri(URI.create("http://localhost:8001/addMoney/user=Jens"))
                 .PUT(HttpRequest.BodyPublishers.ofString("200"))
                 .build();
 
         HttpRequest getMoney = HttpRequest.newBuilder()                 //widraw money
-                .uri(URI.create("http://google.com/"))
+                .uri(URI.create("http://localhost:8001/getMoney/user=Jens"))
                 .PUT(HttpRequest.BodyPublishers.ofString("200"))
                 .build();
         IPUtils.printIpv4Interfaces();
