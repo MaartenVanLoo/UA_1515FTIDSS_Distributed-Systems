@@ -21,15 +21,9 @@ public class REST_Client {
                 .GET()
                 .build();
 
-        HttpRequest addMoney = HttpRequest.newBuilder()                 //deposit money
-                .uri(URI.create("http://localhost:8001/addMoney/user=Jens"))
-                .PUT(HttpRequest.BodyPublishers.ofString("200"))
-                .build();
 
-        HttpRequest getMoney = HttpRequest.newBuilder()                 //widraw money
-                .uri(URI.create("http://localhost:8001/getMoney/user=Jens"))
-                .PUT(HttpRequest.BodyPublishers.ofString("200"))
-                .build();
+
+
         IPUtils.printIpv4Interfaces();
 
         Scanner sc = new Scanner(System.in);
@@ -38,13 +32,38 @@ public class REST_Client {
         //synchronous send
         while (inputLine!= null) {
             if(inputLine.equals("getBalance")){
-                HttpResponse balance =
-                        client.send(getBalance, BodyHandlers.ofString());
+                //Get user
+                System.out.print("Enter username: ");
+                String user = inputLine = sc.nextLine();
+
+                //send request
+                HttpResponse balance = client.send(getBalance, BodyHandlers.ofString());
                 System.out.println(balance.statusCode());
                 System.out.println(balance.body());
 
             }
             else if(inputLine.equals("addMoney")){
+                //Get user
+                System.out.print("Enter username: ");
+                String user = inputLine = sc.nextLine();
+
+                //Get value
+                int value = -1;
+                while (value < 0) {
+                    System.out.print("Enter value: ");
+                    inputLine = sc.nextLine();
+                    try {
+                        value = Integer.parseInt(inputLine);
+                    }catch (NumberFormatException e){
+                        value = -1;
+                    }
+                }
+
+                HttpRequest addMoney = HttpRequest.newBuilder()                 //deposit money
+                        .uri(URI.create("http://localhost:8001/addMoney/user=" + user))
+                        .PUT(HttpRequest.BodyPublishers.ofString(Integer.toString(value)))
+                        .build();
+
                 HttpResponse add =
                         client.send(addMoney, BodyHandlers.ofString());
                 System.out.println(add.statusCode());
@@ -52,6 +71,27 @@ public class REST_Client {
 
             }
             else if(inputLine.equals("getMoney")){
+                //Get user
+                System.out.print("Enter username: ");
+                String user = inputLine = sc.nextLine();
+
+                //Get ammount
+                int value = -1;
+                while (value < 0) {
+                    System.out.print("Enter value: ");
+                    inputLine = sc.nextLine();
+                    try {
+                        value = Integer.parseInt(inputLine);
+                    }catch (NumberFormatException e){
+                        value = -1;
+                    }
+                }
+
+                HttpRequest getMoney = HttpRequest.newBuilder()                 //widraw money
+                        .uri(URI.create("http://localhost:8001/getMoney/user=" + user))
+                        .PUT(HttpRequest.BodyPublishers.ofString(Integer.toString(value)))
+                        .build();
+
                 HttpResponse receive =
                         client.send(getMoney, BodyHandlers.ofString());
                 System.out.println(receive.statusCode());

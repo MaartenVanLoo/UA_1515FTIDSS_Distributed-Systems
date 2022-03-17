@@ -117,24 +117,27 @@ public class REST_Server {
             System.out.println("POST Request");
             System.out.println(httpExchange.getRequestURI().toString());
             String requestURI = httpExchange.getRequestURI().toString();
-            InputStream bodyPOST = httpExchange.getRequestBody();
+            BufferedReader bodyPOST = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()));
 
             return "";
         }
-        String handlePutRequest(HttpExchange httpExchange){
+        String handlePutRequest(HttpExchange httpExchange) throws IOException {
             System.out.println("PUT Request");
             System.out.println(httpExchange.getRequestURI().toString());
             String requestURI = httpExchange.getRequestURI().toString();
-            InputStream bodyPUT = httpExchange.getRequestBody();
+            BufferedReader bodyPUT = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()));
             String[] cmd = requestURI.split("/");
 
-            if (cmd[0].equals("addMoney")){
-                String[] args= cmd[1].split("=");
-                System.out.println("Add money to " + args[0] + " value = " + args[1]);
-            }
-            else if (cmd[0].equals("getMoney")){
-                String[] args= cmd[1].split("=");
-                System.out.println("Get money from " + args[0] + " value = " + args[1]);
+            try {
+                if (cmd[1].equals("addMoney")) {
+                    String[] args = cmd[2].split("=");
+                    System.out.println("Add money to " + args[1] + "\tvalue: " + bodyPUT.readLine());
+                } else if (cmd[1].equals("getMoney")) {
+                    String[] args = cmd[2].split("=");
+                    System.out.println("Get money from " + args[1] + "\tvalue: " + bodyPUT.readLine());
+                }
+            }catch (IOException e) {
+                httpExchange.sendResponseHeaders(404, 0);
             }
 
             return "New Balance";
