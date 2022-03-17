@@ -20,8 +20,8 @@ public class RestAPI_Server {
         this.server.setExecutor(threadPoolExecutor);
 
         }
-    public void addContext(String path, HttpHandler handler){
-        server.createContext(path, handler);
+    public void addContext(RestAPI_Handler handler){
+        server.createContext(handler.contextPath, handler);
     }
 
     public void start(){

@@ -3,50 +3,97 @@ package REST_bank;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpPrincipal;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public abstract class RestAPI_Handler implements HttpHandler {
-    public RestAPI_Handler() {}
+    protected String contextPath ="/";
+    public RestAPI_Handler(){};
+    public RestAPI_Handler(String contextPath) {
+        this.contextPath = contextPath;
+    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if ("GET".equals(exchange.getRequestMethod())){
-            System.out.println("GET REQUEST");
-            handleGetRequest(exchange);
-        }
-        else if("PUT".equals(exchange.getRequestMethod())){
-            System.out.println("PUT REQUEST");
-            handlePutRequest(exchange);
+        switch (exchange.getRequestMethod()){
+            case "GET":
+                System.out.println("****BEGIN GET REQUEST****");
+                handleGetRequest(exchange);
+                System.out.println("****END GET REQUEST****");
+                break;
+            case "POST":
+                System.out.println("****BEGIN POST REQUEST****");
+                handlePostRequest(exchange);
+                System.out.println("****END POST REQUEST****");
+                break;
+            case "PUT":
+                System.out.println("****BEGIN PUT REQUEST****");
+                handlePutRequest(exchange);
+                System.out.println("****END PUT REQUEST****");
+                break;
+            case "DELETE":
+                System.out.println("****BEGIN DELETE REQUEST****");
+                handleDeleteRequest(exchange);
+                System.out.println("****END DELETE REQUEST****");
+                break;
         }
     }
 
-    void handleGetRequest(HttpExchange httpExchange) throws IOException {
-        System.out.println("Get Request");
+    private void handleGetRequest(HttpExchange httpExchange) throws IOException {
         System.out.println(httpExchange.getRequestURI().toString());
 
         //get data
         String object = getURI(httpExchange.getRequestURI().toString());
         if (object == null) {
             httpExchange.sendResponseHeaders(400,0);
+            httpExchange.getResponseBody().close();
             return;
         }
         //send data
         try {
             byte[] data = object.getBytes(StandardCharsets.UTF_8);
-            OutputStream outputStream = httpExchange.getResponseBody();
             httpExchange.sendResponseHeaders(200, data.length);
+            OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.write(data);
             outputStream.flush();
             outputStream.close();
         }catch (IOException e){
             httpExchange.sendResponseHeaders(400,0);
+            httpExchange.getResponseBody().close();
         }
     }
 
-    void handlePutRequest(HttpExchange httpExchange) throws IOException{
-        System.out.println("Get Request");
+    private void handlePostRequest(HttpExchange httpExchange) throws IOException{
+        System.out.println(httpExchange.getRequestURI().toString());
+
+        //get body
+        String body = inputStreamToString(httpExchange.getRequestBody());
+
+        //get data
+        String object = postURI(httpExchange.getRequestURI().toString(),body);
+
+        if (object == null) {
+            httpExchange.sendResponseHeaders(400,0);
+            httpExchange.getResponseBody().close();
+            return;
+        }
+        //send data
+        try {
+            byte[] data = object.getBytes(StandardCharsets.UTF_8);
+            httpExchange.sendResponseHeaders(200, data.length);
+            OutputStream outputStream = httpExchange.getResponseBody();
+            outputStream.write(data);
+            outputStream.flush();
+            outputStream.close();
+        }catch (IOException e){
+            httpExchange.sendResponseHeaders(400,0);
+            httpExchange.getResponseBody().close();
+        }
+    }
+
+    private void handlePutRequest(HttpExchange httpExchange) throws IOException{
         System.out.println(httpExchange.getRequestURI().toString());
 
         //get body
@@ -56,19 +103,34 @@ public abstract class RestAPI_Handler implements HttpHandler {
 
         if (object == null) {
             httpExchange.sendResponseHeaders(400,0);
+            httpExchange.getResponseBody().close();
             return;
         }
         //send data
         try {
             byte[] data = object.getBytes(StandardCharsets.UTF_8);
-            OutputStream outputStream = httpExchange.getResponseBody();
             httpExchange.sendResponseHeaders(200, data.length);
+            OutputStream outputStream = httpExchange.getResponseBody();
             outputStream.write(data);
             outputStream.flush();
             outputStream.close();
         }catch (IOException e){
             httpExchange.sendResponseHeaders(400,0);
+            httpExchange.getResponseBody().close();
         }
+    }
+
+    private void handleDeleteRequest(HttpExchange httpExchange) throws IOException{
+        System.out.println(httpExchange.getRequestURI().toString());
+
+        //get data
+        boolean success = deleteURI(httpExchange.getRequestURI().toString());
+        if (success){
+            httpExchange.sendResponseHeaders(200, 0);
+        }else{
+            httpExchange.sendResponseHeaders(400,0);
+        }
+        httpExchange.close();
     }
 
     private String inputStreamToString(InputStream stream) throws IOException {
@@ -95,4 +157,7 @@ public abstract class RestAPI_Handler implements HttpHandler {
      */
     abstract String putURI(String URI,String value);
 
+    abstract String postURI(String URI,String value);
+
+    abstract boolean deleteURI(String URI);
 }
