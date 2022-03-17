@@ -80,7 +80,19 @@ public abstract class RestAPI_Handler implements HttpHandler {
         return buf.toString("UTF-8");
     }
 
+    /**
+     * Process the GET request for the given URI.
+     * @param URI Universal resource indentification.
+     * @return String containing requested resource.
+     */
     abstract String getURI(String URI);
+
+    /**
+     * Process the PUT request for the given URI and body.
+     * @param URI Universal resource indentification.
+     * @param value Body data in put request.
+     * @return String containing updated resource.
+     */
     abstract String putURI(String URI,String value);
 
 }

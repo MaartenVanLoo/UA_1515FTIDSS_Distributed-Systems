@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
+import REST_bank.RestAPI_Handler;
 public class BankServer {
     HashMap<String,BankAccount> bankData;
 
@@ -22,15 +22,15 @@ public class BankServer {
 
     public void startServer() throws IOException {
         RestAPI_Server server = new RestAPI_Server();
-        server.addContext("/bank",new RestAPI_Handler(bankData));
+        server.addContext("/bank",new bank_restAPI(bankData));
         server.start();
     }
 
-    private class RestAPI_Handler extends REST_bank.RestAPI_Handler {
+    private class bank_restAPI extends RestAPI_Handler {
         HashMap<String,BankAccount> bank;
 
-        private RestAPI_Handler() {};
-        public RestAPI_Handler(HashMap<String, BankAccount> bank) {
+        private bank_restAPI() {};
+        public bank_restAPI(HashMap<String, BankAccount> bank) {
             this.bank = bank;
         }
 
