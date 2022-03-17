@@ -45,9 +45,10 @@ public class BankClient {
     public static void main(String[] args) throws IOException {
         System.out.println("Starting BankClient");
         System.out.println("Balance Jens: " + BankClient.getBalanace("Jens"));
-        System.out.println("Deposit 100, new balance:" + BankClient.deposit("Jens",100));
-        System.out.println("Deposit 100, new balance:" + BankClient.deposit("Jens",100));
-        System.out.println("Deposit 100, new balance:" + BankClient.deposit("Jens",100));
-        System.out.println("Withdraw 100, new balance:" + BankClient.withdraw("Jens",100));
+        for (int i = 0; i < 1000; i++){
+            System.out.println("Deposit 100, new balance:" + BankClient.deposit("Jens",100));
+        }
+        System.out.println("Balance Jens: " + BankClient.getBalanace("Jens"));
+
     }
 }

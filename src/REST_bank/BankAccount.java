@@ -21,15 +21,15 @@ public class BankAccount {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public synchronized void setBalance(long balance) {
         this.balance = balance;
     }
 
-    public long withdraw(long value){
+    public synchronized long withdraw(long value){
         this.balance -= value;
         return this.balance;
     }
-    public long deposit(long value){
+    public synchronized long deposit(long value){
         this.balance += value;
         return this.balance;
     }
