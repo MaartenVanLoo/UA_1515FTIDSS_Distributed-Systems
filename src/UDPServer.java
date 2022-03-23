@@ -3,7 +3,7 @@
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+
 
 /***
  * source:https://www.baeldung.com/udp-in-java
@@ -27,6 +27,7 @@ public class UDPServer  extends Thread{
 
                 InetAddress address = packet.getAddress();
                 int port = packet.getPort();
+                System.out.println("Receiving port:" + port);
                 packet = new DatagramPacket(buf, buf.length, address, port);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 received = received.substring(0,received.indexOf(0)); //remove buffer padding on the end!! (\0)
@@ -65,11 +66,17 @@ public class UDPServer  extends Thread{
         System.out.println("File send");
     }
 
-    public static void main(String[] args) throws IOException {
+    public void terminateServer(){
+        running = false;
+    }
+
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Starting server");
         System.out.println("Server host ip:");
         IPUtils.printIpv4Interfaces();
         UDPServer server = new UDPServer(8889);
-        server.run();
+        server.start();
+        Thread.sleep(10000);
+        server.terminateServer(); //will terminate after next 'request' because while loop gets stopped
     }
 }

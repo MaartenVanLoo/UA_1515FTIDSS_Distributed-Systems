@@ -23,7 +23,7 @@ public class SimpleServer {
                 out.println("bye");
                 break;
             }
-            System.out.printf("Recieved: %s\n", inputLine);
+            System.out.printf("Received: %s\n", inputLine);
 
             String[] cmd = inputLine.split(":");
             if (cmd.length == 0) continue;

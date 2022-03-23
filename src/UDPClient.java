@@ -39,7 +39,7 @@ public class UDPClient {
         packet = new DatagramPacket(buf,buf.length);
         socket.receive(packet);
         String received = new String(packet.getData(), 0, packet.getLength());
-        int packetSize = Integer.valueOf(received);
+        int packetSize = Integer.parseInt(received);
         System.out.println(packetSize);
         //Actual data
         packet = new DatagramPacket(buf,buf.length);
@@ -67,7 +67,7 @@ public class UDPClient {
         System.out.println(answer);
         answer = client.sendMessage("IT WORKS!!!!");
         System.out.println(answer);
-        client.requestFile("testfile.png");
+        client.requestFile("testfile.png"); // note: filetransfer with udp = unreliable and doesn't work
 
     }
 }
