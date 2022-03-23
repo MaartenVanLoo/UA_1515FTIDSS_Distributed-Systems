@@ -1,4 +1,5 @@
 package Project.Naming;
+import Project.REST_API.RestAPI_Server;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -10,6 +11,9 @@ import java.util.stream.Collectors;
 public class NameServer {
     final String mappingFile = "nameServerMap";
     private HashMap<Integer,String> ipMapping; //id =>ip;
+    RestAPI_Server restAPI_server = new RestAPI_Server();
+
+    public NameServer() throws IOException {}
 
     private void writeMapToFile(String filename) throws IOException {
         JSONObject jsonObject = new JSONObject();
