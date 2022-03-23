@@ -24,3 +24,5 @@ hs_err_pid*
 
 /UA_1515FTIDSS_Distributed-Systems/
 /out/
+/src/main/java/FileTransfer/
+/.idea/

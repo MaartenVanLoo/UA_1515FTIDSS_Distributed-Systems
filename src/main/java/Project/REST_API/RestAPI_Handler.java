@@ -95,4 +95,7 @@ public abstract class RestAPI_Handler implements HttpHandler {
      */
     public abstract String putURI(String URI,String value);
 
+    public abstract String postURI(String URI,String value);
+
+    public abstract boolean deleteURI(String URI);
 }
