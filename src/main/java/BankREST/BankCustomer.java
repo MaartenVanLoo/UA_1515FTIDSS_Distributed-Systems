@@ -44,7 +44,7 @@ public class BankCustomer {
                     case "3":
                         System.out.println("How much do you like to withdraw from your account? ");
                         int wd = Integer.parseInt(sc.nextLine());
-                        String bal2 = bc.addBalance(name, pw, wd);
+                        String bal2 = bc.wdBalance(name, pw, wd);
                         System.out.println("Your new balance is: "+bal2);
                         option = "0";
                         break;
